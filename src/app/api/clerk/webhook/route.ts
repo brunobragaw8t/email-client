@@ -1,7 +1,24 @@
+import { z } from "zod";
 import { db } from "~/server/db";
 
+const createUserSchema = z.object({
+  id: z.string(),
+  email_addresses: z.array(z.object({
+    email_address: z.string(),
+  })).nonempty(),
+  first_name: z.string(),
+  last_name: z.string(),
+  image_url: z.string(),
+});
+
 export const POST = async (req: Request) => {
-  const { data } = await req.json();
+  const parsed = createUserSchema.safeParse(await req.json())
+
+  if (typeof parsed.data === 'undefined') {
+    return new Error('Validation error');
+  }
+
+  const data = parsed.data;
 
   const id = data.id;
   const email = data.email_addresses[0].email_address;
