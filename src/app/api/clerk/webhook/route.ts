@@ -2,13 +2,15 @@ import { z } from "zod";
 import { db } from "~/server/db";
 
 const createUserSchema = z.object({
-  id: z.string(),
-  email_addresses: z.array(z.object({
-    email_address: z.string(),
-  })).nonempty(),
-  first_name: z.string(),
-  last_name: z.string(),
-  image_url: z.string(),
+  data: z.object({
+    id: z.string(),
+    email_addresses: z.array(z.object({
+      email_address: z.string(),
+    })).nonempty(),
+    first_name: z.string(),
+    last_name: z.string(),
+    image_url: z.string(),
+  })
 }).strip();
 
 export const POST = async (req: Request) => {
@@ -19,7 +21,7 @@ export const POST = async (req: Request) => {
     throw new Error('Zod validation error');
   }
 
-  const data = parsed.data;
+  const data = parsed.data.data;
 
   const id = data.id;
   const email = data.email_addresses[0].email_address;
