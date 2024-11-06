@@ -15,7 +15,8 @@ export const POST = async (req: Request) => {
   const parsed = createUserSchema.safeParse(await req.json())
 
   if (typeof parsed.data === 'undefined') {
-    throw new Error('Validation error');
+    console.log(parsed.error);
+    throw new Error('Zod validation error');
   }
 
   const data = parsed.data;
