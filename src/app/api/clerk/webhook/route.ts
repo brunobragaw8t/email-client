@@ -9,7 +9,7 @@ const createUserSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   image_url: z.string(),
-});
+}).strip();
 
 export const POST = async (req: Request) => {
   const parsed = createUserSchema.safeParse(await req.json())
